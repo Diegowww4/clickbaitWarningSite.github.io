@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>iPhone16 大放送！</title>
-  
   <style>
     body {
       font-family: sans-serif;
@@ -25,18 +24,30 @@
       font-size: 1.5em;
       color: #555;
     }
+    marquee {
+      margin-top: 50px;
+      font-size: 1.2em;
+      color: darkred;
+    }
+    img {
+      width: 300px;
+      height: auto;
+      margin-top: 30px;
+    }
   </style>
 </head>
 <body>
   <h1>🎉 恭喜您獲得 iPhone 16 抽獎資格 🎉</h1>
   <button class="click-btn" onclick="goToForm()">點我抽 iPhone16！</button>
   <div class="counter">目前點選次數：<span id="count">0</span> 次</div>
-  <p>
-    <img src="iphone.png" alt="iPhone 16" style width:300px height: auto;>
-    
-  </p> 
+
+  <img src="iphone.png" alt="iPhone 16">
+
+  <!-- 跑馬燈顯示所有填過資料的人名 -->
+  <marquee behavior="scroll" direction="left" id="nameMarquee">載入中...</marquee>
+
   <script>
-    
+    // 點選次數記錄
     let count = localStorage.getItem('clickCount') || 0;
     document.getElementById('count').innerText = count;
 
@@ -45,20 +56,22 @@
       localStorage.setItem('clickCount', count);
       window.location.href = "form.html";
     }
+
+    // 從 Google Apps Script 載入名單
+    fetch("https://script.google.com/macros/s/AKfycbwZf3S8JG5ni2ow4WhiJlL4TDcPA7OjJAFFbyclODnmUN3nQjzdylsTbOOlNyBlLyBQ/exec")
+      .then(res => res.json())
+      .then(names => {
+        const marquee = document.getElementById("nameMarquee");
+        if (Array.isArray(names) && names.length > 0) {
+          marquee.textContent = '🎯 所有填寫過的使用者：' + names.join('、');
+        } else {
+          marquee.textContent = '目前尚無填寫紀錄，快來當第一位幸運兒！';
+        }
+      })
+      .catch(err => {
+        console.error("載入名單失敗", err);
+        document.getElementById("nameMarquee").textContent = "⚠ 無法載入填寫名單";
+      });
   </script>
-  <marquee behavior="scroll" direction="left" id="nameMarquee" style="margin-top: 50px; font-size: 1.2em; color: darkred;"></marquee>
-
-<script>
-  // 取得已填寫名單
-  const names = JSON.parse(localStorage.getItem('filledNames') || '[]');
-  const marquee = document.getElementById('nameMarquee');
-
-  if (names.length > 0) {
-    marquee.textContent = '🎯 填寫過資料的幸運兒：' + names.join('、');
-  } else {
-    marquee.textContent = '目前尚無人填寫資料，快來成為第一位吧！';
-  }
-</script>
-
 </body>
 </html>
