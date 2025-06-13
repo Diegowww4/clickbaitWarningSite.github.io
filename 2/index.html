@@ -43,37 +43,33 @@
 
   <img src="iphone.png" alt="iPhone 16">
 
-  <!-- 跑馬燈顯示所有填過資料的人名 -->
-  <marquee behavior="scroll" direction="left" id="nameMarquee">正在載入資料...</marquee>
+  <marquee behavior="scroll" direction="left" id="nameMarquee">載入名單中...</marquee>
 
   <script>
     const scriptURL = "https://script.google.com/macros/s/AKfycbwZf3S8JG5ni2ow4WhiJIl_L4TDCpA7OjJAFFbyclODnmUN3nQjzdylsTbOOlNyBlLyBQ/exec";
 
     function goToForm() {
-      // 紀錄一次點擊行為
       fetch(`${scriptURL}?click=1`)
         .finally(() => {
           window.location.href = "form.html";
         });
     }
 
-    // 載入點選次數與使用者姓名
     fetch(scriptURL)
       .then(res => res.json())
       .then(data => {
         document.getElementById("count").textContent = data.clickCount || 0;
-
         const marquee = document.getElementById("nameMarquee");
         if (Array.isArray(data.names) && data.names.length > 0) {
           marquee.textContent = '🎯 所有填寫過的使用者：' + data.names.join('、');
         } else {
-          marquee.textContent = '目前尚無填寫紀錄，快來當第一位幸運兒！';
+          marquee.textContent = '目前尚無填寫紀錄';
         }
       })
       .catch(err => {
         console.error("載入失敗", err);
-        document.getElementById("nameMarquee").textContent = "⚠ 無法載入名單";
         document.getElementById("count").textContent = "?";
+        document.getElementById("nameMarquee").textContent = "⚠ 載入名單失敗";
       });
   </script>
 </body>
