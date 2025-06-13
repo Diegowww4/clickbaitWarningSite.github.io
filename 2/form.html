@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>請填寫您的資料</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f3f4f6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 50px;
+    }
+    form {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input {
+      margin: 10px 0;
+      padding: 10px;
+      width: 250px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1em;
+      background: gold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>確認您的抽獎資格</h2>
+  <form id="myForm">
+    <input type="text" name="name" placeholder="姓名" required><br>
+    <input type="tel" name="phone" placeholder="電話" required><br>
+    <button type="submit">確認送出</button>
+  </form>
+
+  <script>
+    document.getElementById("myForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const name = e.target.name.value.trim();
+      const phone = e.target.phone.value.trim();
+
+      const scriptURL = "https://script.google.com/macros/s/AKfycbwZf3S8JG5ni2ow4WhiJIl_L4TDCpA7OjJAFFbyclODnmUN3nQjzdylsTbOOlNyBlLyBQ/exec";
+      const url = `${scriptURL}?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}`;
+
+      fetch(url)
+        .then(res => res.text())
+        .then(() => {
+          window.location.href = "download.html";
+        })
+        .catch(err => {
+          alert("送出失敗：" + err);
+        });
+    });
+  </script>
+</body>
+</html>

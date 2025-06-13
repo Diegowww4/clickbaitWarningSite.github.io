@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>iPhone16 大放送！</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background: linear-gradient(to bottom, #fdf6e3, #f3e5f5);
+      padding-top: 50px;
+    }
+    .click-btn {
+      font-size: 2em;
+      padding: 20px 40px;
+      background: gold;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .counter {
+      margin-top: 20px;
+      font-size: 1.5em;
+      color: #555;
+    }
+    marquee {
+      margin-top: 50px;
+      font-size: 1.2em;
+      color: darkred;
+    }
+    img {
+      width: 300px;
+      height: auto;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎉 恭喜您獲得 iPhone 16 抽獎資格 🎉</h1>
+  <button class="click-btn" onclick="goToForm()">點我抽 iPhone16！</button>
+  <div class="counter">目前點選次數：<span id="count">載入中...</span> 次</div>
+
+  <img src="iphone.png" alt="iPhone 16">
+
+  <!-- 跑馬燈顯示所有填過資料的人名 -->
+  <marquee behavior="scroll" direction="left" id="nameMarquee">正在載入資料...</marquee>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwZf3S8JG5ni2ow4WhiJIl_L4TDCpA7OjJAFFbyclODnmUN3nQjzdylsTbOOlNyBlLyBQ/exec";
+
+    function goToForm() {
+      // 紀錄一次點擊行為
+      fetch(`${scriptURL}?click=1`)
+        .finally(() => {
+          window.location.href = "form.html";
+        });
+    }
+
+    // 載入點選次數與使用者姓名
+    fetch(scriptURL)
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("count").textContent = data.clickCount || 0;
+
+        const marquee = document.getElementById("nameMarquee");
+        if (Array.isArray(data.names) && data.names.length > 0) {
+          marquee.textContent = '🎯 所有填寫過的使用者：' + data.names.join('、');
+        } else {
+          marquee.textContent = '目前尚無填寫紀錄，快來當第一位幸運兒！';
+        }
+      })
+      .catch(err => {
+        console.error("載入失敗", err);
+        document.getElementById("nameMarquee").textContent = "⚠ 無法載入名單";
+        document.getElementById("count").textContent = "?";
+      });
+  </script>
+</body>
+</html>
