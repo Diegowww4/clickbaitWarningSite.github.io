@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>請填寫您的資料</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f3f4f6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 50px;
+    }
+    form {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input {
+      margin: 10px 0;
+      padding: 10px;
+      width: 250px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1em;
+      background: gold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>確認您的抽獎資格</h2>
+  <form action=alert.txt.txt onsubmit="saveName()">
+    <input type="text" name="name" placeholder="姓名" required><br>
+    <input type="tel" name="phone" placeholder="電話" required><br>
+    <button type="submit">確認送出</button>
+  </form>
+
+  <script>
+    function saveName() {
+      const name = document.querySelector('input[name=\"name\"]').value.trim();
+      if (name) {
+        let names = JSON.parse(localStorage.getItem('filledNames') || '[]');
+        names.push(name);
+        localStorage.setItem('filledNames', JSON.stringify(names));
+      }
+    }
+  </script>
+</body>
+</html>
