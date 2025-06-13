@@ -50,7 +50,7 @@
       const phone = e.target.phone.value.trim();
 
       // 請替換為你自己的 Google Apps Script 網址
-      const scriptURL = "https://script.google.com/macros/s/AKfycbwZf3S8JG5ni2ow4WhiJlL4TDcPA7OjJAFFbyclODnmUN3nQjzdylsTbOOlNyBlLyBQ/exec";
+      const scriptURL = "https://script.google.com/macros/s/AKfycbwZf3S8JG5ni2ow4WhiJIl_L4TDCpA7OjJAFFbyclODnmUN3nQjzdylsTbOOlNyBlLyBQ/exec";
       const url = `${scriptURL}?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}`;
 
       fetch(url)
